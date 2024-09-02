@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+  userapp.api:
+    image: ${DOCKER_REGISTRY-}userappapi
+    build:
+      context: .
+      dockerfile: Services/Userapp/Userapp.API/Dockerfile

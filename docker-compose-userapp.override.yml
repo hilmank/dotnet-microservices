@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  userapp.api:
+    container_name: userapp.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings__ConnectionString=Server=schooldb;Port=5432;Database=SchoolDb;User Id=admin;Password=Password@1;"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200" 
+    ports:
+      - "8001:8080"

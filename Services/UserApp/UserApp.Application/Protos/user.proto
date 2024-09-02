@@ -1,0 +1,125 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+//import "google/protobuf/timestamp.proto";
+option csharp_namespace = "UserApp.Application.Protos";
+
+service UserProtoService {
+  rpc GetUsers(EmptyRequest) returns (UserListResponse);
+  rpc GetUser(GetUserRequest) returns (UserResponse);
+  rpc UserCreate(UserCreateRequest) returns (UserCreateResponse);
+  rpc UserUpdate(UserUpdateRequest) returns (UserUpdateResponse);
+  rpc UserDelete(UserDeleteRequest) returns (UserDeleteResponse);
+  rpc UserSignin(UserSigninRequest) returns (UserSiginResponse);
+  rpc UserChangePassword(UserChangePasswordRequest) returns (UserUpdateResponse);
+  rpc UserActivate(GetUserRequest) returns (UserUpdateResponse);
+  rpc UserDeActivate(GetUserRequest) returns (UserUpdateResponse);
+}
+
+// Define reequest
+message EmptyRequest {}
+message CustomServiceFault {
+    string ErrorMessage = 1;
+    string StackTrace = 2;
+    string Target = 3;
+    string Source = 4;
+    string InnerExceptionMessage = 5;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+message UserCreateRequest {
+    string Username = 1;
+    string Password = 2;
+    string ConfirmPassword = 3;
+    string Email = 4;
+    string FirstName = 5;
+    google.protobuf.StringValue MiddleName = 6;
+    google.protobuf.StringValue LastName = 7;
+    string Address = 8;
+    google.protobuf.StringValue PhoneNumber = 9;
+    google.protobuf.StringValue MobileNumber = 10;
+    UserProfilePictureModel ProfilePicture = 11; 
+    string CreatedBy = 12;
+}
+message UserProfilePictureModel {
+    string ContentType = 1;
+    string FileName = 2;
+    bytes Base64String = 3;
+}
+message UserUpdateRequest {
+    string Id = 1;
+    google.protobuf.StringValue Email = 2;
+    google.protobuf.StringValue FirstName = 3;
+    google.protobuf.StringValue MiddleName = 4;
+    google.protobuf.StringValue LastName = 5;
+    google.protobuf.StringValue Address = 6;
+    google.protobuf.StringValue PhoneNumber = 7;
+    google.protobuf.StringValue MobileNumber = 8;
+    UserProfilePictureModel ProfilePicture = 9; 
+    string UpdatedBy = 10;
+}
+message UserDeleteRequest {
+  string id = 1;    
+}
+message UserSigninRequest {
+    string usernameOrEmail = 1;
+    string password = 2;
+}
+message UserChangePasswordRequest {
+    string usernameOrEmail = 1;
+    string password = 2;
+    string newPassword = 3;
+    string confirmPassword = 4;
+}
+// Define a model/response
+message UserModel {
+    string Id = 1;
+    string Username = 2;
+    string Password = 3;
+    string Email = 4;
+    string FirstName = 5;
+    string MiddleName = 6;
+    string LastName = 7;
+    string Address = 8;
+    string PhoneNumber = 9;
+    string MobileNumber = 10;
+    string OrgId = 11;
+    int32 Status = 12;
+    string LastLogin = 13;
+    string FullName = 14;
+}
+message UserResponse {
+    bool success = 1;
+    string message = 2;
+    CustomServiceFault messageDetail = 3;
+    UserModel user = 4;
+}
+
+message UserListResponse {
+    bool success = 1;
+    string message = 2;
+    CustomServiceFault messageDetail = 3;
+    repeated UserModel users = 4;
+}
+message UserCreateResponse {
+    bool success = 1;
+    string message = 2;
+    CustomServiceFault messageDetail = 3;
+}
+message UserUpdateResponse {
+    bool success = 1;
+    string message = 2;
+    CustomServiceFault messageDetail = 3;
+}
+message UserDeleteResponse {
+    bool success = 1;
+    string message = 2;
+    CustomServiceFault messageDetail = 3;
+}
+message UserSiginResponse {
+    bool success = 1;
+    string message = 2;
+    CustomServiceFault messageDetail = 3;
+    string token = 4;
+}

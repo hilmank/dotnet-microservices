@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using UserApp.Application.Settings;
 
 namespace UserApp.Infrastructure.Extensions;
 
@@ -13,12 +15,11 @@ public static class DbExtension
         using (var scope = host.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
-            var config = services.GetRequiredService<IConfiguration>();
             var logger = services.GetRequiredService<ILogger<TContext>>();
             try
             {
                 logger.LogInformation("User DB Migration Started");
-                ApplyMigrations(config);
+                ApplyMigrations();
                 logger.LogInformation("User DB Migration Completed");
             }
             catch (Exception ex)
@@ -29,51 +30,33 @@ public static class DbExtension
         }
         return host;
     }
-
-    private static void ApplyMigrations(IConfiguration config)
+    private static void ApplyMigrations()
     {
-        var retry = 5;
-        while (retry > 0)
+        using var connection = new NpgsqlConnection(DatabaseSettings.ConnectionString);
+        connection.Open();
+        using var tx = connection.BeginTransaction();
+        //initial database
+        string sql = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'usr';";
+        var result = connection.QueryFirstOrDefault<string>(sql);
+        if (result is null)
         {
-            try
+            var initDb = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DbSql", "initDb.sql");
+            string sqlInit = File.ReadAllText(initDb);
+            connection.ExecuteScalar(sqlInit);
+        }
+        //update database
+        string[] files = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DbSql"), "updatedb*.sql");
+        foreach (string file in files)
+        {
+            sql = $"SELECT filename FROM database_change_log WHERE filename = '{Path.GetFileName(file)}'";
+            result = connection.QueryFirstOrDefault<string>(sql);
+            if (result is null)
             {
-                using var connection = new NpgsqlConnection(config.GetValue<string>("DatabaseSettings:ConnectionString"));
-                connection.Open();
-                using var cmd = new NpgsqlCommand
-                {
-                    Connection = connection
-                };
-                // Check if the Coupon table exists
-                using var checkCmd = new NpgsqlCommand
-                {
-                    Connection = connection,
-                    CommandText = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'usr';"
-                };
-
-                var result = checkCmd.ExecuteScalar();
-                if (result != DBNull.Value && result != null)
-                {
-                    // The table exists, so skip migration
-                    Console.WriteLine("usr schema already exists, skipping migration.");
-                    return;
-                }
-                var relativePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DbSql", "initDb.sql");
-                cmd.CommandText = File.ReadAllText(relativePath);
-                cmd.ExecuteNonQuery();
-                // Exit loop if successful
-                break;
-            }
-            catch (Exception)
-            {
-                retry--;
-                if (retry == 0)
-                {
-                    throw;
-                }
-                //Wait for 2 seconds
-                Thread.Sleep(2000);
+                string sqlUpdate = File.ReadAllText(file);
+                connection.ExecuteScalar(sqlUpdate);
             }
         }
+        tx.Commit();
     }
 }
 

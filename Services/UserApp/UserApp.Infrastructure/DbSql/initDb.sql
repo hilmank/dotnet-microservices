@@ -1,3 +1,10 @@
+CREATE TABLE "public".database_change_log (
+    id serial NOT NULL, 
+    filename varchar(255) NOT NULL, 
+    executed_date timestamp(6) NOT NULL,
+    CONSTRAINT database_change_log_pkey PRIMARY KEY (id),
+    CONSTRAINT database_change_log_ukey UNIQUE (filename)
+);
 CREATE SCHEMA IF NOT EXISTS usr AUTHORIZATION admin;
 
 CREATE TABLE usr.appl (
@@ -510,3 +517,8 @@ INSERT INTO
     usr.user_role (user_id, role_id)
 VALUES
     ('01J4CBVMDZ5B3C65JSYWJJ4KGP', 'admin');
+
+--insert history update
+INSERT INTO public.database_change_log(
+	filename, executed_date)
+	VALUES ('initDb.sql', now());    

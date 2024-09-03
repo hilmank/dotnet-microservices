@@ -3,7 +3,6 @@ using System.Text;
 using Common.Logging;
 using Infrastructure.Common.UserPreferences;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using UserApp.API.Services;
@@ -14,6 +13,7 @@ using UserApp.Core.Repositories;
 using UserApp.Infrastructure.Extensions;
 using UserApp.Application.Middlewares;
 using UserApp.Infrastructure.Repositories;
+using UserApp.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +38,7 @@ builder.Services.AddLocalization();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddGrpc();
 builder.Services.AddHttpContextAccessor();
@@ -60,6 +61,9 @@ DirectorySettings.UrlFileApp = $"{DirectorySettings.BaseUrl}/{DirectorySettings.
 
 var jwtSettings = new JwtSettings();
 builder.Configuration.Bind(JwtSettings.SectioName, jwtSettings);
+
+var smtpSettings = new SmtpSettings();
+builder.Configuration.Bind(SmtpSettings.SectioName, smtpSettings);
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<UserProfile>());
 

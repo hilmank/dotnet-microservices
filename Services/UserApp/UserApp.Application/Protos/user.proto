@@ -9,10 +9,11 @@ service UserProtoService {
   rpc UserCreate(UserCreateRequest) returns (UserCreateResponse);
   rpc UserUpdate(UserUpdateRequest) returns (UserUpdateResponse);
   rpc UserDelete(UserDeleteRequest) returns (UserDeleteResponse);
-  rpc UserSignin(UserSigninRequest) returns (UserSiginResponse);
+  rpc UserSignin(UserSigninRequest) returns (UserSigninResponse);
   rpc UserChangePassword(UserChangePasswordRequest) returns (UserUpdateResponse);
   rpc UserActivate(GetUserRequest) returns (UserUpdateResponse);
   rpc UserDeActivate(GetUserRequest) returns (UserUpdateResponse);
+  rpc UserResetPassword(GetUserRequest) returns (UserUpdateResponse);
 }
 
 // Define reequest
@@ -117,7 +118,7 @@ message UserDeleteResponse {
     string message = 2;
     CustomServiceFault messageDetail = 3;
 }
-message UserSiginResponse {
+message UserSigninResponse {
     bool success = 1;
     string message = 2;
     CustomServiceFault messageDetail = 3;

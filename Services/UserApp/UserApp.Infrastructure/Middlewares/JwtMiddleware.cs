@@ -3,10 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using UserApp.Application.Settings;
-using UserApp.Core.Entities;
 using UserApp.Core.Repositories;
 
-namespace UserApp.Application.Middlewares
+namespace UserApp.Infrastructure.Middlewares
 {
     public class JwtMiddleware
     {

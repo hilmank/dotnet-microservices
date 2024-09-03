@@ -1,5 +1,3 @@
-using System;
-
 namespace UserApp.Application.Settings;
 
 public class JwtSettings

@@ -20,13 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UserApp.Core\UserApp.Core.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs/" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Infrastructure.Common">
-      <HintPath>Libs\Infrastructure.Common.dll</HintPath>
-    </Reference>
-  </ItemGroup>   
+  <None Update="Resources\Templates\Email\*.html">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </None>
+</ItemGroup>   
 </Project>

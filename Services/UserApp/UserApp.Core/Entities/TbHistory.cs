@@ -15,7 +15,7 @@ public class TbHistory<ClassTable>
         get
         {
             var tableAttribute = typeof(ClassTable).GetCustomAttribute(typeof(System.ComponentModel.DataAnnotations.Schema.TableAttribute)) as System.ComponentModel.DataAnnotations.Schema.TableAttribute;
-            return $"{tableAttribute.Schema}.{tableAttribute.Name}";
+            return $"{tableAttribute!.Schema}.{tableAttribute.Name}";
         }
         set { }
     }

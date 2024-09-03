@@ -3,6 +3,8 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
+    <PackageReference Include="MailKit" Version="4.7.1.1" />
+    <PackageReference Include="MimeKit" Version="4.7.1" />
     <PackageReference Include="Npgsql" Version="8.0.3" />
     <PackageReference Include="PostgreSQLCopyHelper" Version="2.8.0" />
   </ItemGroup>

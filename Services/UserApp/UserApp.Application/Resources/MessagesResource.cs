@@ -1,6 +1,6 @@
 using System;
 
-namespace UserApp.Application.Exceptions;
+namespace UserApp.Application.Resources;
 
 public class MessagesResource
 {

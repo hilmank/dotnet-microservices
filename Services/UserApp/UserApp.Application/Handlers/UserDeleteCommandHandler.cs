@@ -4,8 +4,8 @@ using MediatR;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using UserApp.Application.Commands;
-using UserApp.Application.Exceptions;
 using UserApp.Application.Protos;
+using UserApp.Application.Resources;
 using UserApp.Core.Repositories;
 
 namespace UserApp.Application.Handlers;

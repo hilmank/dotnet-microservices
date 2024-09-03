@@ -9,7 +9,7 @@ using UserApp.Core.Entities;
 using Infrastructure.Common.Constants;
 using Microsoft.Extensions.Localization;
 using Infrastructure.Common.Exceptions;
-using UserApp.Application.Exceptions;
+using UserApp.Application.Resources;
 namespace UserApp.API.Services;
 
 public class UserService : UserProtoService.UserProtoServiceBase
@@ -32,9 +32,9 @@ public class UserService : UserProtoService.UserProtoServiceBase
     protected User UserInfo()
     {
         var httpContext = _httpContextAccessor.HttpContext;
-        var ret = httpContext.Items["User"];
+        var ret = httpContext!.Items["User"];
         var result = ret as User;
-        result.Password = string.Empty;
+        result!.Password = string.Empty;
         return result;
     }
     public static T CreateErrorResponse<T>(Exception exception, string message) where T : new()
@@ -157,7 +157,7 @@ public class UserService : UserProtoService.UserProtoServiceBase
             return CreateErrorResponse<UserDeleteResponse>(exception, _errorLocalizer["Error.Common.Failed"]);
         }
     }
-    public override async Task<UserSiginResponse> UserSignin(UserSigninRequest request, ServerCallContext context)
+    public override async Task<UserSigninResponse> UserSignin(UserSigninRequest request, ServerCallContext context)
     {
         try
         {
@@ -171,7 +171,7 @@ public class UserService : UserProtoService.UserProtoServiceBase
         }
         catch (System.Exception exception)
         {
-            return CreateErrorResponse<UserSiginResponse>(exception, _errorLocalizer["Error.Common.Failed"]);
+            return CreateErrorResponse<UserSigninResponse>(exception, _errorLocalizer["Error.Common.Failed"]);
         }
     }
     [Authorize]
@@ -223,6 +223,24 @@ public class UserService : UserProtoService.UserProtoServiceBase
                 Id = request.Id,
                 UpdatedBy = UserInfo().Id,
                 Status = StatusDataConstant.NotActive
+            };
+            var retVal = await _mediator.Send(command);
+            return retVal;
+        }
+        catch (System.Exception exception)
+        {
+            return CreateErrorResponse<UserUpdateResponse>(exception, _errorLocalizer["Error.Common.Failed"]);
+        }
+    }
+    [Authorize]
+    public override async Task<UserUpdateResponse> UserResetPassword(GetUserRequest request, ServerCallContext context)
+    {
+        try
+        {
+            var command = new UserResetPasswordCommand
+            {
+                Id = request.Id,
+                UpdatedBy = UserInfo().Id
             };
             var retVal = await _mediator.Send(command);
             return retVal;

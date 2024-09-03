@@ -15,13 +15,9 @@
     <ProjectReference Include="..\..\..\Infrastructure\Common.Logging\Common.Logging.csproj" />
     <ProjectReference Include="..\UserApp.Application\UserApp.Application.csproj" />
     <ProjectReference Include="..\UserApp.Infrastructure\UserApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs/" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Infrastructure.Common">
-      <HintPath>Libs\Infrastructure.Common.dll</HintPath>
-    </Reference>
-  </ItemGroup>   
 </Project>

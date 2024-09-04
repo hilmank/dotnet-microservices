@@ -2,10 +2,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Student.Core\Student.Core.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
     <PackageReference Include="MediatR" Version="12.4.0" />
   </ItemGroup>
 
@@ -14,5 +16,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+	  <Protobuf Include="..\..\UserApp\UserApp.Application\Protos\user.proto" GrpcServices="Client">
+		  <Link>Protos\user.proto</Link>
+	  </Protobuf>
+  </ItemGroup>
 
 </Project>

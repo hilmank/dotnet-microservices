@@ -1,7 +1,7 @@
 ﻿namespace Student.Core.Entities;
 
 [System.ComponentModel.DataAnnotations.Schema.Table("enrollment", Schema = "std")]
-public abstract class Enrollment
+public class Enrollment
 {
     [Dapper.Contrib.Extensions.ExplicitKey, System.ComponentModel.DataAnnotations.Required]
     [System.ComponentModel.DataAnnotations.Schema.Column("id")]

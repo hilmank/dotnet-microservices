@@ -29,6 +29,9 @@ message CustomServiceFault {
 message GetUserRequest {
   string id = 1;
 }
+message GetUserBuUsernameOrEmailRequest {
+  string usernameOrEmail = 1;
+}
 message UserCreateRequest {
     string Username = 1;
     string Password = 2;

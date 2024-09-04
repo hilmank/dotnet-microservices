@@ -52,9 +52,9 @@ public class UserService : UserProtoService.UserProtoServiceBase
             {
                 prop.SetValue(response, message);
             }
-            else if (prop.Name == "MessageDetail" && prop.PropertyType == typeof(CustomServiceFault))
+            else if (prop.Name == "MessageDetail" && prop.PropertyType == typeof(UserApp.Application.Protos.CustomServiceFault))
             {
-                var fault = new CustomServiceFault
+                var fault = new UserApp.Application.Protos.CustomServiceFault
                 {
                     ErrorMessage = exception.Message,
                     Source = exception.Source,

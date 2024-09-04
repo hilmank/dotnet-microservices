@@ -3,7 +3,7 @@
 namespace Student.Core.Entities;
 
 [System.ComponentModel.DataAnnotations.Schema.Table("user", Schema = "usr")]
-public abstract class User
+public class User
 {
     [Dapper.Contrib.Extensions.ExplicitKey, System.ComponentModel.DataAnnotations.Required]
     [System.ComponentModel.DataAnnotations.Schema.Column("id")]

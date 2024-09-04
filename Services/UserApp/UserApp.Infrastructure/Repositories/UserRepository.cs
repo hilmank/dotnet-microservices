@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Grpc.Core;
 using UserApp.Core.Entities;
 using UserApp.Core.Repositories;
 using UserApp.Infrastructure.Extensions;
@@ -16,7 +15,8 @@ public class UserRepository : IUserRepository
     public async Task<User> Get(string id)
     {
         await using var connection = await DapperConnectionProvider.ConnectionAsync();
-        return await connection.GetAsync<User>(id);
+        var users =await connection.GetListAsync<User>();
+        return users.FirstOrDefault(x => x.Id == id||x.Username == id||x.Email == id)!;
     }
     public async Task<User> GetByUsernameOrEmail(string usernameOrEmail)
     {

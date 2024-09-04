@@ -14,7 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Student.Application\Student.Application.csproj" />
     <ProjectReference Include="..\Student.Infrastructure\Student.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructure\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
 
 </Project>
